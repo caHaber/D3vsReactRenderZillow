@@ -15,12 +15,12 @@ class App extends Component{
             groupVar:'State',
             yVar:'YoY',
             idVar:'City',
-            search: '500',
+            filterNum: '500',
             urlData:'data/MarketHealthIndex_City.csv'
         };
 
         this.changeX = this.changeX.bind(this);
-        this.search = this.search.bind(this);
+        this.changeFilter = this.changeFilter.bind(this);
         this.changeY = this.changeY.bind(this);
     }
     componentWillMount() {
@@ -51,14 +51,17 @@ class App extends Component{
     }
     changeX(event, index, value) {
         this.setState({xVar:value});
+        this.loadRawData();
     }
 
     changeY(event, index, value) {
         this.setState({yVar:value});
+        this.loadRawData();
+
     }
 
-    search(event) {
-        this.setState({search:event.target.value});
+    changeFilter(event, index, value) {
+        this.setState({filterNum:value});
     }
 	render() {
         // Prep data
@@ -73,7 +76,7 @@ class App extends Component{
         //     }
         // });
 
-        let chartData = this.state.data.filter((d) => d.id < +this.state.search);
+        let chartData = this.state.data.filter((d) => d.id < +this.state.filterNum);
 
         // nest data
         // let nestedData = d3.nest()
@@ -94,11 +97,12 @@ class App extends Component{
                 bins: 20,
                 width: 500,
                 height: 500,
-                leftAxisMargin: 83,
+                leftMargin: 83,
                 topMargin: 10,
                 bottomMargin: 25,
             },
-            fullWidth = 700;
+            fullWidth = 700,
+            fullHeight = 700;
 
 
         // Return ScatterPlot element
@@ -109,15 +113,12 @@ class App extends Component{
                 <Controls
                     changeX={this.changeX}
                     changeY={this.changeY}
+                    changeFilter={this.changeFilter}
                     xVar={this.state.xVar}
                     yVar={this.state.yVar}
-                    search={this.search}
-                    chartType={this.state.chartType}
-                    changeChart={this.changeChart}
-                    changeFilter={this.changeFilter}
-                    searchType={this.state.searchType}
+                    filterNum={this.state.filterNum}
                 />
-                    <svg width={fullWidth} height={params.height}>
+                    <svg width={fullWidth} height={fullHeight}>
                         <PlotComponent {...params} data={chartData}/>
                     </svg>
             </div>

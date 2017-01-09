@@ -9,16 +9,13 @@ class PlotCircle extends Component {
         let translate = `translate(${this.props.cx}, ${this.props.cy})`;
 
         return (
-
                 <circle
-
+                      transform={translate}
                       r={this.props.r}
-                      cx={this.props.cx}
-                      cy={this.props.cy}
+                      cx={0}
+                      cy={0}
                       >
-                </circle
->
-
+                </circle>
         );
 
 

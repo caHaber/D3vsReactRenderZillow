@@ -42,6 +42,17 @@ var Controls = React.createClass({
                         <MenuItem value={'Delinquency'} primaryText="Delinquency" />
 
                     </SelectField>
+                    <SelectField
+                        key="2"
+                        floatingLabelText="Select Filter Amount"
+                        value={this.props.filterNum}
+                        onChange={this.props.changeFilter}
+                    >
+                        <MenuItem value={'500'} primaryText="500" />
+                        <MenuItem value={'1000'} primaryText="1000" />
+                        <MenuItem value={'10000'} primaryText="10000" />
+
+                    </SelectField>
                 </div>
             </MuiThemeProvider>
 		);

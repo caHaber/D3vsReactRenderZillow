@@ -6,13 +6,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 
-class Axis extends Component {
+class AxisY extends Component {
     constructor(props) {
         super();
 
-        this.xScale = d3.scaleLinear()
-            .domain(d3.extent(props.data, (d) => d.x))
-            .range([props.leftMargin, props.width]);
+        this.yScale = d3.scaleLinear();
 
         this.update_d3(props);
     }
@@ -23,9 +21,10 @@ class Axis extends Component {
 
     update_d3(props) {
 
-        this.xScale
-            .domain(d3.extent(props.data, (d) => d.x))
-            .range([props.leftMargin, props.width]);
+        this.yScale
+            .domain([0,
+                d3.max(props.data.map((d) => d.y))])
+            .range([0, props.height-props.topMargin-props.bottomMargin]);
 
     }
 
@@ -35,16 +34,16 @@ class Axis extends Component {
     renderAxis() {
         let node = ReactDOM.findDOMNode(this);
 
-        d3.select(node).call(d3.axisBottom(this.xScale));
+        d3.select(node).call(d3.axisLeft(this.yScale));
     }
 
     render() {
-        let translate = `translate(0, ${this.props.height})`;
+        let translate = `translate(${this.props.leftMargin-3}, 0)`;
         return (
-            <g className="axis" transform={translate}>
+            <g className="axisY" transform={translate}>
             </g>
         );
     }
 }
 
-export default Axis;
+export default AxisY;

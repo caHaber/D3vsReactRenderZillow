@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import './ScatterPlot.css';
 import PlotCircle from './PlotCircle.js'
 import Axis from './Axis.js';
+import AxisY from './AxisY.js';
 
 
 // Scatterplot component
@@ -28,13 +29,13 @@ class PlotComponent extends Component{
 
 
         this.xScale
-            .range([props.leftAxisMargin, props.width - props.leftAxisMargin])
+            .range([9, props.width-props.leftMargin])
             .domain([d3.min(props.data, (d) => d.x), d3.max(props.data, (d) => d.x)]);
 
 
 
         this.yScale
-            .range([props.height-props.topMargin-props.bottomMargin, 0])
+            .range([0, props.height-props.topMargin-props.bottomMargin])
             .domain([d3.min(props.data, (d) => d.y), d3.max(props.data, (d) => d.y)]);
 
 
@@ -43,7 +44,7 @@ class PlotComponent extends Component{
     }
     // Update on new props
     componentWillReceiveProps (newProps){
-        this.update_d3();
+        this.update_d3(newProps);
     }
 
     makeCircle(circle) {
@@ -66,11 +67,12 @@ class PlotComponent extends Component{
         let translate = `translate(0, ${this.props.topMargin})`;
 		// Expose HTML node via ref property
 		return (
-            <g className="histogram" transform={translate}>
+            <g className="histogram" width={this.props.width} height={this.props.height} transform={translate}>
                 <g className="dots">
                     {this.props.data.map(this.makeCircle.bind(this))}
                 </g>
                 <Axis {...this.props} data={this.props.data}  />
+                <AxisY {...this.props} data={this.props.data}  />
             </g>
 
 		);
