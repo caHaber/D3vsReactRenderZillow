@@ -2,8 +2,9 @@
   "name": "exercise-4",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://housing-market.herokuapp.com/",
+  "homepage": "https://housing-market.herokuapp.com/",
   "devDependencies": {
+    "babel-preset-es2016": "^6.16.0",
     "react-scripts": "0.7.0"
   },
   "dependencies": {

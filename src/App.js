@@ -1,80 +1,128 @@
 // Application
-import React from 'react';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
-import SmallMultiples from './SmallMultiples'
+import PlotComponent from './PlotComponent'
 import Controls from './Controls';
-import './App.css';
-var App = React.createClass({
-    getInitialState() {
-        return {
+import './style.css';
+
+class App extends Component{
+    constructor() {
+        super();
+
+        this.state = {
             data:[],
-            xVar:'ylls',
-            groupVar:'age',
-            yVar:'ylds',
-            idVar:'cause_name',
-            search:''
-        }
-    },
+            xVar:'DaysOnMarket',
+            groupVar:'State',
+            yVar:'YoY',
+            idVar:'City',
+            search: '500',
+            urlData:'data/MarketHealthIndex_City.csv'
+        };
+
+        this.changeX = this.changeX.bind(this);
+        this.search = this.search.bind(this);
+        this.changeY = this.changeY.bind(this);
+    }
     componentWillMount() {
-        // Get data
-        d3.csv('data/prepped_data.csv', function(data){
-            this.setState({data:data})
-        }.bind(this))
-    },
-    changeX(event, index, value) {
-        this.setState({xVar:value})
-    },
-    changeY(event, index, value) {
-        this.setState({yVar:value})
-    },
-    search(event) {
-        this.setState({search:event.target.value.toLowerCase()})
-    },
-	render() {
-        // Prep data
-        let chartData = this.state.data.map((d) => {
-            let selected = d[this.state.idVar].toLowerCase().match(this.state.search) !== null;
-            return {
-                x:d[this.state.xVar],
-                y:d[this.state.yVar],
-                group:d[this.state.groupVar],
-                id:d[this.state.idVar],
-                selected:selected
-            }
-        });
+        this.loadRawData();
+    }
+    loadRawData() {
+        d3.csv(this.state.urlData)
+            .row((d) => {
 
-        // nest data
-        let nest = d3.nest().key((d) => d.group);
-        let nestedData = nest.entries(chartData)
-                        .sort(function(a,b){
-                            let aKey = a.key == 'Under 5' ? '0' : a.key;
-                            let bKey = b.key == 'Under 5' ? '0' : b.key;
-                            return Number(aKey.split(' ')[0]) - Number(bKey.split(' ')[0])
-                        });
-
-		// Return ScatterPlot element
-		return (
-
-            <div>
-                <nav>Disease Burden in India</nav>
-                <Controls
-                    search={this.search}
-                />
-                {this.state.data.length !==0 &&
-                    <div className="App">
-                        <SmallMultiples
-                            xTitle="YLLs"
-                            yTitle="YLDs"
-                            search={this.state.search}
-                            data={nestedData}
-                            width={window.innerWidth / 3}
-                            height={window.innerHeight / 2} />
-                    </div>
+                if (!d['SizeRank']){
+                    return null;
                 }
 
+                return {x : d[this.state.xVar],
+                        y : d[this.state.yVar],
+                        id: d.SizeRank};
+
+
+            })
+          .get((error, rows) => {
+              if (error) {
+                  console.error(error);
+                  console.error(error.stack);
+              }else{
+                  this.setState({data: rows});
+          } });
+
+    }
+    changeX(event, index, value) {
+        this.setState({xVar:value});
+    }
+
+    changeY(event, index, value) {
+        this.setState({yVar:value});
+    }
+
+    search(event) {
+        this.setState({search:event.target.value});
+    }
+	render() {
+        // Prep data
+        // let chartData = this.state.data.map((d) => {
+        //     let selected = d[this.state.idVar].toLowerCase().match(this.state.search) !== null;
+        //     return {
+        //         x:d[this.state.xVar],
+        //         y:d[this.state.yVar],
+        //         group:d[this.state.groupVar],
+        //         id:d[this.state.idVar],
+        //         selected:selected
+        //     }
+        // });
+
+        let chartData = this.state.data.filter((d) => d.id < +this.state.search);
+
+        // nest data
+        // let nestedData = d3.nest()
+        //     .key((d) => d.State)
+        //     .rollup(function (s) { return {
+        //         x: d3.mean(s, (d) => d.Delinquency),
+        //         y: d3.mean(s, (d) => d.DaysOnMarket)
+        //      }; })
+        //     .entries(this.state.data);
+        //
+        // this.setState({data:nestedData});
+
+        if (!this.state.data.length) {
+            return (<h1> Loading raw data from www.zillow.com/research/data/ </h1>);
+        }
+
+        let params = {
+                bins: 20,
+                width: 500,
+                height: 500,
+                leftAxisMargin: 83,
+                topMargin: 10,
+                bottomMargin: 25,
+            },
+            fullWidth = 700;
+
+
+        // Return ScatterPlot element
+		return (
+
+            <div className="App">
+                <h1 className="header"> Zillow Housing Research Data by City </h1>
+                <Controls
+                    changeX={this.changeX}
+                    changeY={this.changeY}
+                    xVar={this.state.xVar}
+                    yVar={this.state.yVar}
+                    search={this.search}
+                    chartType={this.state.chartType}
+                    changeChart={this.changeChart}
+                    changeFilter={this.changeFilter}
+                    searchType={this.state.searchType}
+                />
+                    <svg width={fullWidth} height={params.height}>
+                        <PlotComponent {...params} data={chartData}/>
+                    </svg>
             </div>
 		);
 	}
-});
+}
 
 export default App;

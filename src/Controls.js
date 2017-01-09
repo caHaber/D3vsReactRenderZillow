@@ -3,6 +3,8 @@ import React from 'react';
 import './Controls.css';
 import {MuiThemeProvider, SelectField, MenuItem, TextField} from 'material-ui';
 
+
+
 // Needed for onTouchTap (to avoid warning from material-ui)
 // See: https://github.com/callemall/material-ui/issues/4670
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -18,11 +20,28 @@ var Controls = React.createClass({
             <MuiThemeProvider>
                 <div className="controls">
                     <br/>
-                    <TextField
-                        hintText="Find a disease"
-                        onChange={this.props.search}
-						width='500px'
-                    />
+                    <SelectField
+                    key="0"
+                    floatingLabelText="X Axis Variable"
+                    value={this.props.xVar}
+                    onChange={this.props.changeX}
+
+                >
+                    <MenuItem value={'DaysOnMarket'} primaryText="DaysOnMarket" />
+                    <MenuItem value={'MarketHealthIndex'} primaryText="MarketHealthIndex" />
+                    <MenuItem value={'ForecastYoYPctChange'} primaryText="ForecastYoYPctChange" />
+                </SelectField>
+                    <SelectField
+                        key="1"
+                        floatingLabelText="Y Axis Variable"
+                        value={this.props.yVar}
+                        onChange={this.props.changeY}
+                    >
+                        <MenuItem value={'YoY'} primaryText="YoY" />
+                        <MenuItem value={'MoM'} primaryText="MoM" />
+                        <MenuItem value={'Delinquency'} primaryText="Delinquency" />
+
+                    </SelectField>
                 </div>
             </MuiThemeProvider>
 		);
