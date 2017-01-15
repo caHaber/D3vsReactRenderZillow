@@ -1,8 +1,13 @@
-# Demo-6
+# Zillow Housing Market ReactD3 concept testing
+
 This exercise demonstrates the use of D3 in conjunction with react. Because this project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app), you'll need to run `npm install` inside the project directory to install necessary packages. Then start your server by running `npm start`.
 
-Disease burden estimates provided here were produced by the [Global Burden of Disease](http://www.healthdata.org/gbd) study, and were downloaded from [here](http://ghdx.healthdata.org/global-burden-disease-study-2013-gbd-2013-data-downloads-full-results).
+The site is live [here](https://housing-market.herokuapp.com/).
 
-The site is live [here](http://mfviz.com/strata-2016/demo-6/), which looks like this:
+This project serves as an example for comparing react and d3 for the appending and control of svg nodes on to a visualization.
 
-![India disease burden charts](imgs/demo-6.png)
+Both will grow side by side to experiment with what allows for more control over visualization.
+
+The goal is to start simple but as the visualization gets more complex, I will begin to formulate what combination of the tools serves me best.
+
+This project serves as the second segment in order to gain a better understanding and ultimately coding fluidity for creating advance interactive visualizations.
