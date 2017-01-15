@@ -8,25 +8,7 @@ import * as d3 from 'd3';
 
 class Axis extends Component {
     constructor(props) {
-        super();
-
-        this.xScale = d3.scaleLinear()
-            .domain(d3.extent(props.data, (d) => d.x))
-            .range([props.leftMargin, props.width]);
-
-        this.update_d3(props);
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.update_d3(newProps);
-    }
-
-    update_d3(props) {
-
-        this.xScale
-            .domain(d3.extent(props.data, (d) => d.x))
-            .range([props.leftMargin, props.width]);
-
+        super(props);
     }
 
     componentDidUpdate() { this.renderAxis(); }
@@ -35,7 +17,7 @@ class Axis extends Component {
     renderAxis() {
         let node = ReactDOM.findDOMNode(this);
 
-        d3.select(node).call(d3.axisBottom(this.xScale));
+        d3.select(node).call(d3.axisBottom(this.props.xScale));
     }
 
     render() {

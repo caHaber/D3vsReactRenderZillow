@@ -16,12 +16,14 @@ class App extends Component{
             yVar:'YoY',
             idVar:'City',
             filterNum: '500',
-            urlData:'data/MarketHealthIndex_City.csv'
+            urlData:'data/MarketHealthIndex_City.csv',
+            renderType: 'd3'
         };
 
         this.changeX = this.changeX.bind(this);
         this.changeFilter = this.changeFilter.bind(this);
         this.changeY = this.changeY.bind(this);
+        this.changeRender = this.changeRender.bind(this);
     }
     componentWillMount() {
         this.loadRawData();
@@ -30,13 +32,15 @@ class App extends Component{
         d3.csv(this.state.urlData)
             .row((d) => {
 
-                if (!d['SizeRank']){
+                if (!d['SizeRank'] || !d[this.state.xVar] || !d[this.state.yVar]){
                     return null;
                 }
 
                 return {x : d[this.state.xVar],
                         y : d[this.state.yVar],
-                        id: d.SizeRank};
+                        id: d.SizeRank,
+                        name: d.CBSATitle,
+                        group: d.State };
 
 
             })
@@ -57,8 +61,12 @@ class App extends Component{
     changeY(event, index, value) {
         this.setState({yVar:value});
         this.loadRawData();
-
     }
+    changeRender(event, index, value) {
+        this.setState({renderType:value});
+        this.loadRawData();
+    }
+
 
     changeFilter(event, index, value) {
         this.setState({filterNum:value});
@@ -97,9 +105,10 @@ class App extends Component{
                 bins: 20,
                 width: 500,
                 height: 500,
-                leftMargin: 83,
-                topMargin: 10,
-                bottomMargin: 25,
+                leftMargin: 70,
+                topMargin: 0,
+                bottomMargin: 50,
+                renderType: this.state.renderType,
             },
             fullWidth = 700,
             fullHeight = 700;
@@ -114,9 +123,11 @@ class App extends Component{
                     changeX={this.changeX}
                     changeY={this.changeY}
                     changeFilter={this.changeFilter}
+                    changeRender={this.changeRender}
                     xVar={this.state.xVar}
                     yVar={this.state.yVar}
                     filterNum={this.state.filterNum}
+                    renderType={this.state.renderType}
                 />
                     <svg width={fullWidth} height={fullHeight}>
                         <PlotComponent {...params} data={chartData}/>

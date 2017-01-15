@@ -53,6 +53,17 @@ var Controls = React.createClass({
                         <MenuItem value={'10000'} primaryText="10000" />
 
                     </SelectField>
+                    <SelectField
+                        key="3"
+                        floatingLabelText="Select Render Type"
+                        value={this.props.renderType}
+                        onChange={this.props.changeRender}
+                    >
+                        <MenuItem value={'react'} primaryText="react" />
+                        <MenuItem value={'d3'} primaryText="d3" />
+
+
+                    </SelectField>
                 </div>
             </MuiThemeProvider>
 		);
