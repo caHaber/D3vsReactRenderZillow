@@ -75,7 +75,7 @@ class PlotComponent extends Component{
     }
 
 	render() {
-        let translate = `translate(${this.props.leftMargin +200}, ${-this.props.topMargin - 200})`;
+        let translate = `translate(${this.props.leftMargin + 200}, ${-this.props.topMargin - 200})`;
         this.timestart[1] = d3.now();
 		// Expose HTML node via ref property
 		return (
