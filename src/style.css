@@ -8,3 +8,27 @@
       /*stroke: #000;*/
       /*shape-rendering: crispEdges;*/
     /*}*/
+/* Inspired by materialize.css */
+
+html {
+  background: white;
+}
+
+.App {
+  color: black;
+}
+
+.info {
+  margin-right: 10vw;
+  margin-left: 10vw;
+  line-height: 1.5em;
+}
+/* 
+.axis *, axisX * {
+  color: white;
+  fill: white;
+}
+
+path { 
+  fill:white;
+} */

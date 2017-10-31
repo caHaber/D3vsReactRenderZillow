@@ -7,11 +7,6 @@ import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 
 class AxisY extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-
     componentDidUpdate() { this.renderAxis(); }
     componentDidMount() { this.renderAxis(); }
 

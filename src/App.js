@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import PlotComponent from './PlotComponent'
 import Controls from './Controls';
 import './style.css';
-
+ 
 class App extends Component{
     constructor() {
         super();
@@ -15,7 +15,7 @@ class App extends Component{
             groupVar:'State',
             yVar:'YoY',
             idVar:'City',
-            filterNum: '500',
+            filterNum: '1000',
             urlData:'data/MarketHealthIndex_City.csv',
             renderType: 'd3'
         };
@@ -72,30 +72,8 @@ class App extends Component{
         this.setState({filterNum:value});
     }
 	render() {
-        // Prep data
-        // let chartData = this.state.data.map((d) => {
-        //     let selected = d[this.state.idVar].toLowerCase().match(this.state.search) !== null;
-        //     return {
-        //         x:d[this.state.xVar],
-        //         y:d[this.state.yVar],
-        //         group:d[this.state.groupVar],
-        //         id:d[this.state.idVar],
-        //         selected:selected
-        //     }
-        // });
 
         let chartData = this.state.data.filter((d) => d.id < +this.state.filterNum);
-
-        // nest data
-        // let nestedData = d3.nest()
-        //     .key((d) => d.State)
-        //     .rollup(function (s) { return {
-        //         x: d3.mean(s, (d) => d.Delinquency),
-        //         y: d3.mean(s, (d) => d.DaysOnMarket)
-        //      }; })
-        //     .entries(this.state.data);
-        //
-        // this.setState({data:nestedData});
 
         if (!this.state.data.length) {
             return (<h1> Loading raw data from www.zillow.com/research/data/ </h1>);
@@ -118,7 +96,13 @@ class App extends Component{
 		return (
 
             <div className="App">
-                <h1 className="header"> Zillow Housing Research Data by City </h1>
+                <div className="info">
+                    <h1 className="header"> Zillow Housing Research Data by City </h1>
+                    <p>This project is a rendering test for implementation of visualizations. The rendering of the visualization either happens using d3 or through the generation of svgs elements through react functions.
+The data is from Zillow’s  ZHVI dataset. This is a investigation of the advantages/disadvantages of said render methods.
+No transitions are included in the react render which makes this a implementation experiment and not a performance test. </p>
+<a href="https://github.com/caHaber/D3vsReactRenderZillow">See code here</a>
+                </div>
                 <Controls
                     changeX={this.changeX}
                     changeY={this.changeY}

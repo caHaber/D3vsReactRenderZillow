@@ -17,7 +17,7 @@ var Controls = React.createClass({
 	render() {
 		// Return links and show anything inside the <App> component (children)
 		return (
-            <MuiThemeProvider>
+            <MuiThemeProvider >
                 <div className="controls">
                     <br/>
                     <SelectField
